@@ -1,0 +1,21 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Stack for preparing state bucket.
+Parameters:
+  BucketName:
+    Type: String
+
+Resources:
+  StateBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: BucketOwnerFullControl
+      BucketName: !Sub "${BucketName}"
+    DeletionPolicy: Retain
+
+Outputs:
+  StateBucketName:
+    Value: !Ref StateBucket
+    Export:
+      Name: !Sub ${AWS::StackName}-StateBucketName

@@ -1,0 +1,21 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Stack for preparing log bucket.
+Parameters:
+  BucketName:
+    Type: String
+
+Resources:
+  LoggingBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: LogDeliveryWrite
+      BucketName: !Sub "${BucketName}"
+    DeletionPolicy: Retain
+
+Outputs:
+  LoggingBucketName:
+    Value: !Ref LoggingBucket
+    Export:
+      Name: !Sub ${AWS::StackName}-LoggingBucketName

@@ -1,0 +1,68 @@
+version: '2'
+services:
+  mailcatcher:
+    image: odaniait/mailcatcher-docker:latest
+    stdin_open: true
+    tty: true
+    ports:
+      - "2525:2525"
+      - "1080:1080"
+
+  nginx:
+    image: nginx:stable
+    stdin_open: true
+    tty: true
+    volumes:
+      - "<%= nginx_volume_html %>"
+      - "<%= nginx_volume_conf_d %>"
+      - "<%= nginx_volume_nginx_conf %>"
+    ports:
+      - "8080:8080/tcp"
+
+  redis:
+    image: redis:alpine
+    stdin_open: true
+    tty: true
+    ports:
+      - "6379:6379/tcp"
+
+  mongo:
+    image: mongo:3.4
+    stdin_open: true
+    tty: true
+    ports:
+      - "27017:27017/tcp"
+
+  varnish:
+    build: ../docker/varnish
+    stdin_open: true
+    tty: true
+    volumes:
+      - "/tmp/octopress-varnish:/etc/varnish"
+    depends_on:
+      - generator
+    ports:
+      - "3000:80/tcp"
+
+  generator:
+    build: ../docker/varnish-generator
+    stdin_open: true
+    tty: true
+    environment:
+      OUT_DIR: "/etc/varnish"
+      ENVIRONMENT: develop
+    volumes:
+      - "/tmp/octopress-varnish:/etc/varnish"
+
+<% compose_images.each do |image| %>
+  <%= image['name'] %>:
+    <%= image['build'].nil? ? '' : "build: #{image['build']}" %>
+    <%= image['image'].nil? ? '' : "image: #{image['image']}" %>
+    stdin_open: true
+    tty: true
+    environment:
+    	<% image['environment'].each do |key, val| %>
+      <%= key %>: <%= val %>
+      <% end %>
+
+<% end %>

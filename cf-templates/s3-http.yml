@@ -1,0 +1,50 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Stack for preparing http serving bucket.
+Parameters:
+  LoggingStackName:
+    Type: String
+  BucketNameGreen:
+    Type: String
+  BucketNameBlue:
+    Type: String
+
+Resources:
+  HttpBucketGreen:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      BucketName: !Sub "${BucketNameGreen}"
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: 404.html
+      LoggingConfiguration:
+        DestinationBucketName: !ImportValue {"Fn::Sub": "${LoggingStackName}-LoggingBucketName"}
+        LogFilePrefix: logs
+      Tags:
+        - Key: Test1
+          Value: val-1
+    DeletionPolicy: Retain
+  HttpBucketBlue:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      BucketName: !Sub "${BucketNameBlue}"
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: 404.html
+      LoggingConfiguration:
+        DestinationBucketName: !ImportValue {"Fn::Sub": "${LoggingStackName}-LoggingBucketName"}
+        LogFilePrefix: logs
+    DeletionPolicy: Retain
+
+Outputs:
+  HttpBucketGreen:
+    Value: !Ref HttpBucketGreen
+    Export:
+      Name: !Sub ${AWS::StackName}-HttpBucketNameGreen
+  HttpBucketBlue:
+    Value: !Ref HttpBucketBlue
+    Export:
+      Name: !Sub ${AWS::StackName}-HttpBucketNameBlue

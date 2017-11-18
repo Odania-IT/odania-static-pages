@@ -1,0 +1,14 @@
+<% redirects.each_pair do |to_host, server_name| %>
+server {
+  listen 8080;
+  listen [::]:8080;
+
+  root <%= image_nginx_html_dir %>;
+  index index.html index.htm index.nginx-debian.html;
+
+  server_name <%= server_name.join(' ') %>;
+
+  return 301 $scheme://<%= to_host %>$request_uri;
+}
+
+<% end %>

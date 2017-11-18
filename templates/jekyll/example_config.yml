@@ -1,0 +1,19 @@
+pages:
+  - name: Example
+    url: "https://www.example.com"
+    email: info@example.com
+    description: >-
+      Welcome to the example page!
+    baseurl: "/"
+    theme: minima
+    permalink: /:year/:month/:day/:title/
+    lang: en
+
+redirect_domains:
+  www.example.com:
+    - example2.com
+
+redirects:
+  www.example.com
+    - test.example3.com
+    - test.example7.com
