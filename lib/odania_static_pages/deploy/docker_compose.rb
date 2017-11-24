@@ -55,7 +55,7 @@ module OdaniaStaticPages
 				compose_file = File.join(@config.project_dir, environment.output_path, 'docker-compose.yml')
 
 				puts "Writing docker compose to #{compose_file}"
-				docker_compose_generator = DockerComposeGenerator.new @config, environment
+				docker_compose_generator = DockerComposeGenerator.new @config, environment, @nginx_conf_dir
 				docker_compose_generator.write compose_file
 			end
 
@@ -66,6 +66,7 @@ module OdaniaStaticPages
 					full_site_name = "#{site_name}.lvh.me"
 					puts "Writing vhost for: #{full_site_name}"
 					expires = @deploy_config.expires
+					FileUtils.mkdir_p @nginx_conf_dir
 					File.write File.join(@nginx_conf_dir, "#{site_name}.conf"), vhost_renderer.result(binding)
 
 					sites[site_name] = "#{site_name}.lvh.me:8080"
@@ -76,6 +77,7 @@ module OdaniaStaticPages
 				end
 
 				puts 'Generating index.html'
+				FileUtils.mkdir_p @config.output_site_path
 				renderer = ERB.new(File.read(File.join(@config.base_dir, 'templates', 'nginx', 'index.html.erb')))
 				File.write File.join(@config.output_site_path, 'index.html'), renderer.result(binding)
 
@@ -127,9 +129,9 @@ module OdaniaStaticPages
 			class DockerComposeGenerator
 				attr_reader :nginx_volume_html, :nginx_volume_conf_d, :nginx_volume_nginx_conf, :compose_images
 
-				def initialize(config, environment)
+				def initialize(config, environment, nginx_conf_dir)
 					@nginx_volume_html = "#{config.output_site_path}:/srv:ro"
-					@nginx_volume_conf_d = "#{@nginx_conf_dir}:/etc/nginx/conf.d:ro"
+					@nginx_volume_conf_d = "#{nginx_conf_dir}:/etc/nginx/conf.d:ro"
 					@nginx_volume_nginx_conf = "#{File.join(config.output_path, 'nginx', 'nginx.conf')}:/etc/nginx/nginx.conf"
 					@compose_images = environment.deploy_module.compose_images
 					@erb_template = File.join(config.base_dir, 'templates', 'docker-compose', 'docker-compose.yml.erb')
