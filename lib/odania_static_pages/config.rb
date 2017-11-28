@@ -64,6 +64,11 @@ module OdaniaStaticPages
 		end
 
 		def current_environment
+			if @environments[@environment].nil?
+				puts "Environment #{environment} no found!"
+				puts "Available Environments: #{@environments.keys}"
+				exit 1
+			end
 			@environments[@environment]
 		end
 
