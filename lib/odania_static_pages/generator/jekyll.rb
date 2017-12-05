@@ -95,7 +95,8 @@ module OdaniaStaticPages
 				env_vars = "BUNDLE_GEMFILE=#{full_site_path}/Gemfile JEKYLL_ENV=#{jekyll_env}"
 				cmd = "cd #{full_site_path} && #{env_vars} bundle exec jekyll build #{options}"
 				puts " -> Building site [cmd: #{cmd}]"
-				unless system(cmd)
+				puts `#{cmd}`
+				unless $?.success?
 					puts "Error building site: #{site_path}"
 					exit 1
 				end
