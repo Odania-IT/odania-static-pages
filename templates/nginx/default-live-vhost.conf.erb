@@ -8,6 +8,6 @@ server {
 	}
 
 	location / {
-		return 301 https://www.die-information.eu;
+		return 301 <%= nginx_default_redirect %>;
 	}
 }

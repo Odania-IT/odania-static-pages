@@ -83,6 +83,9 @@ module OdaniaStaticPages
 
 				puts 'Copy default vhost'
 				FileUtils.cp File.join(@config.base_dir, 'templates', 'nginx', 'default-vhost.conf'), File.join(@nginx_conf_dir, 'default.conf')
+
+				puts 'Copy nginx.conf'
+				FileUtils.cp File.join(@config.base_dir, 'templates', 'nginx', 'nginx.conf'), File.join(@nginx_dir, 'nginx.conf')
 			end
 
 			def prepare_varnish
