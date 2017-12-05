@@ -61,8 +61,7 @@ services:
     stdin_open: true
     tty: true
     environment:
-    	<% image['environment'].each do |key, val| %>
-      <%= key %>: <%= val %>
+      <% image['environment'].each do |key, val| %><%= key %>: <%= val %>
       <% end %>
 
 <% end %>
