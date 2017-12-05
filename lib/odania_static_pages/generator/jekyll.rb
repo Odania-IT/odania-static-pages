@@ -91,7 +91,9 @@ module OdaniaStaticPages
 				puts `cd #{File.join(@generator_config.pages_dir, site_path)} && bundle check`
 				puts `cd #{File.join(@generator_config.pages_dir, site_path)} && bundle install --path ~/.gems` unless $?.success?
 
-				cmd = "cd #{ File.join(@generator_config.pages_dir, site_path) } && JEKYLL_ENV=#{jekyll_env} bundle exec jekyll build #{options}"
+				full_site_path = File.join(@generator_config.pages_dir, site_path)
+				env_vars = "BUNDLE_GEMFILE=#{full_site_path}/Gemfile JEKYLL_ENV=#{jekyll_env}"
+				cmd = "cd #{full_site_path} && #{env_vars} bundle exec jekyll build #{options}"
 				puts " -> Building site [cmd: #{cmd}]"
 				unless system(cmd)
 					puts "Error building site: #{site_path}"
