@@ -42,7 +42,7 @@ services:
     depends_on:
       - generator
     ports:
-      - "3000:80/tcp"
+      - "8088:80/tcp"
 
   generator:
     build: ../docker/varnish-generator

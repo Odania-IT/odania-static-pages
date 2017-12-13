@@ -5,7 +5,7 @@
 <ul>
   <% sites.each do |site_name, site_path| %>
     <li>
-			<a href="<%= site_path.gsub(':8080', ':3000') %>" target="_blank"><%= site_name %></a>
+			<a href="<%= site_path.gsub(':8080', ':8088') %>" target="_blank"><%= site_name %></a>
 			(<a href="<%= site_path %>" target="_blank">Nginx</a>)
 		</li>
   <% end %>

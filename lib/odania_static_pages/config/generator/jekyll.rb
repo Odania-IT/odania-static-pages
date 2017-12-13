@@ -50,7 +50,7 @@ module OdaniaStaticPages
 
 					puts ' -> Linking Gemfile*'
 					dot_bundle_folder = File.join(full_common_folder, '.bundle')
-					FileUtils.ln_s dot_bundle_folder, page_path, force: true if File.exist? dot_bundle_folder
+					FileUtils.ln_s(dot_bundle_folder, page_path, force: true) if File.exist? dot_bundle_folder
 					FileUtils.ln_s File.join(full_common_folder, 'Gemfile'), File.join(page_path, 'Gemfile'), force: true
 					FileUtils.ln_s File.join(full_common_folder, 'Gemfile.lock'), File.join(page_path, 'Gemfile.lock'), force: true
 
