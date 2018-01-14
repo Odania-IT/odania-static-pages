@@ -6,6 +6,7 @@ module OdaniaStaticPages
 			def initialize
 				@config = OdaniaStaticPages.config
 				@deploy_config = @config.current_environment.deploy_module
+				@generator_config = @config.generator
 				@local_state = '_local_state.yml'
 			end
 
