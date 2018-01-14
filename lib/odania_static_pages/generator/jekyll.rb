@@ -63,9 +63,10 @@ module OdaniaStaticPages
 				setup_generator
 
 				generate_nginx_config(false)
+				jekyll_env = 'live'.eql?(env) ? 'production' : env
 
 				grouped_domains.each_pair do |site_name, page_config|
-					build_for_configs(page_config, site_name, @config.output_site_path, env)
+					build_for_configs(page_config, site_name, @config.output_site_path, jekyll_env)
 				end
 			end
 
