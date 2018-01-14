@@ -35,7 +35,8 @@ module NginxHelper
 		end
 
 		puts 'Copy default vhost'
-		FileUtils.cp File.join(@config.base_dir, 'templates', 'nginx', default_vhost_file), File.join(@nginx_conf_dir, 'default.conf')
+		renderer = ERB.new(File.read(File.join(@config.base_dir, 'templates', 'nginx', default_vhost_file)))
+		File.write File.join(@nginx_conf_dir, 'default.conf'), renderer.result(binding)
 
 		puts 'Copy nginx.conf'
 		FileUtils.cp File.join(@config.base_dir, 'templates', 'nginx', 'nginx.conf'), File.join(@nginx_dir, 'nginx.conf')
