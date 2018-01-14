@@ -28,4 +28,17 @@ module NginxHelper
 		puts 'Copy nginx.conf'
 		FileUtils.cp File.join(@config.base_dir, 'templates', 'nginx', 'nginx.conf'), File.join(@nginx_dir, 'nginx.conf')
 	end
+
+	def grouped_domains
+		result = Hash.new { |k, v| k[v] = [] }
+
+		@generator_config.jekyll_config['pages'].each do |page|
+			uri = URI.parse(page['url'])
+			host = uri.host
+			result[host] << {baseurl: page['baseurl'], relative_path: @generator_config.page_path(page)}
+		end
+
+		puts result.inspect
+		result
+	end
 end

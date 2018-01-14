@@ -30,7 +30,7 @@ module OdaniaStaticPages
 				puts " -> Deploying to color: #{new_color} [Path: #{@site_path}]"
 
 				generate_compose_config
-				NginxHelper.generate_nginx_config(do_rebuild)
+				generate_nginx_config(do_rebuild)
 				prepare_varnish
 
 				@config.current_environment.do_notify new_color, color
@@ -87,19 +87,6 @@ module OdaniaStaticPages
 				puts 'Prepare varnish secret'
 				File.write File.join(docker_folder, 'varnish', 'varnish-secret'), @deploy_config.varnish_secret
 				File.write File.join(docker_folder, 'varnish-generator', 'varnish-secret'), @deploy_config.varnish_secret
-			end
-
-			def grouped_domains
-				result = Hash.new { |k, v| k[v] = [] }
-
-				@generator_config.jekyll_config['pages'].each do |page|
-					uri = URI.parse(page['url'])
-					host = uri.host
-					result[host] << {baseurl: page['baseurl'], relative_path: @generator_config.page_path(page)}
-				end
-
-				puts result.inspect
-				result
 			end
 
 			class DockerComposeGenerator

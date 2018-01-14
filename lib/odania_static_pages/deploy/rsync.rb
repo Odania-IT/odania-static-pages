@@ -17,7 +17,7 @@ module OdaniaStaticPages
 				puts 'Copying Dockerfile'
 				FileUtils.cp File.join(@config.base_dir, 'templates', 'live', 'Dockerfile'), File.join(@config.output_path, 'Dockerfile')
 
-				NginxHelper.generate_nginx_config(false)
+				generate_nginx_config(false)
 			end
 
 			def publish(color, do_rebuild)
