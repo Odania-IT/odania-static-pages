@@ -13,6 +13,7 @@ require_relative 'odania_static_pages/deploy/docker_compose'
 require_relative 'odania_static_pages/deploy/rsync'
 require_relative 'odania_static_pages/deploy/s3'
 require_relative 'odania_static_pages/generator/jekyll'
+require_relative 'odania_static_pages/helper/nginx'
 require_relative 'odania_static_pages/server/nginx'
 require_relative 'odania_static_pages/version'
 

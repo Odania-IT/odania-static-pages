@@ -63,6 +63,10 @@ module OdaniaStaticPages
 			File.join @project_dir, 'pages'
 		end
 
+		def output_nginx_conf_d_path
+			File.join @output_nginx_path, 'conf.d'
+		end
+
 		def current_environment
 			if @environments[@environment].nil?
 				puts "Environment #{environment} no found!"
