@@ -1,6 +1,8 @@
 module OdaniaStaticPages
 	module Generator
 		class Jekyll
+			include ::NginxHelper
+
 			def init
 				puts 'Initliazing jekyll pages'
 				puts
@@ -19,6 +21,9 @@ module OdaniaStaticPages
 				gemfile_template = File.join(@config.base_dir, 'templates', 'jekyll', 'Gemfile.erb')
 				gem_extra = @generator_config.gem_extra
 				File.write File.join(@generator_config.full_common_folder, 'Gemfile'), ERB.new(File.read(gemfile_template)).result(binding)
+
+				puts 'Copying Dockerfile'
+				FileUtils.cp File.join(@config.base_dir, 'templates', 'live', 'Dockerfile'), File.join(@config.output_path, 'Dockerfile')
 
 				puts 'Install gems'
 				puts `cd #{@generator_config.full_common_folder} && bundle check`
@@ -57,6 +62,8 @@ module OdaniaStaticPages
 				puts 'Building all jekyll websites'
 				setup_generator
 
+				generate_nginx_config(false)
+
 				grouped_domains.each_pair do |site_name, page_config|
 					build_for_configs(page_config, site_name, @config.output_site_path, env)
 				end
@@ -71,6 +78,10 @@ module OdaniaStaticPages
 				@pages_path = @config.pages_path
 				@jekyll_config_file = @generator_config.jekyll_config_file
 				@jekyll_config = @generator_config.jekyll_config
+
+				@deploy_config = @current_environment.deploy_module
+				@nginx_dir = File.join(@config.output_path, 'nginx')
+				@nginx_conf_dir = File.join(@nginx_dir, 'conf.d')
 			end
 
 			def grouped_domains

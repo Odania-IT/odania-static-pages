@@ -2,7 +2,7 @@ module OdaniaStaticPages
 	class Config
 		module Generator
 			class Jekyll
-				attr_reader :plugins, :encoding, :common_folder, :extra_options, :gem_extra
+				attr_reader :plugins, :encoding, :common_folder, :extra_options, :gem_extra, :nginx_default_redirect
 
 				def initialize(project_dir, options)
 					@plugins = options['plugins'] || %w(jekyll-feed octopress-image-tag octopress-gist)
@@ -11,6 +11,7 @@ module OdaniaStaticPages
 					@extra_options = options['extra_options'] || {}
 					@gem_extra = options['gem_extra'] || ''
 					@project_dir = project_dir
+					@nginx_default_redirect = options['nginx_default_redirect'] || 'https://www.odania-it.com'
 				end
 
 				def to_h
