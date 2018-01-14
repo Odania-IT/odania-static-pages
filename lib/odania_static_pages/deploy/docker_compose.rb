@@ -1,7 +1,7 @@
 module OdaniaStaticPages
 	module Deploy
 		class DockerCompose
-			include NginxHelper
+			include ::NginxHelper
 
 			def initialize
 				@config = OdaniaStaticPages.config
